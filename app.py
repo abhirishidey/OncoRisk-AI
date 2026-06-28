@@ -110,3 +110,132 @@ if page == "Prediction History":
 
     else:
         st.table(st.session_state.history)
+
+    # Home Page
+if page == "Home":
+
+    st.title("🏠 Welcome to OncoRisk AI")
+
+    st.write("""
+    OncoRisk AI is an AI-powered cancer risk assessment platform.
+
+    This application estimates an individual's cancer risk
+    based on lifestyle and demographic factors.
+
+    Navigate to 'Risk Assessment' from the sidebar to begin.
+    """)
+
+
+# Health Chatbot Page
+if page == "Health Chatbot":
+
+    st.title("🤖 OncoAssist Chatbot")
+
+    question = st.text_input(
+        "Ask a health-related question:"
+    )
+
+    if st.button("Ask"):
+
+        q = question.lower()
+
+        if "smoking" in q:
+            st.success(
+                "Smoking is a major risk factor for several cancers."
+            )
+
+        elif "exercise" in q:
+            st.success(
+                "Regular physical activity may reduce cancer risk."
+            )
+
+        elif "alcohol" in q:
+            st.success(
+                "Excessive alcohol consumption can increase cancer risk."
+            )
+
+        elif "family" in q:
+            st.success(
+                "Family history can influence cancer susceptibility."
+            )
+
+        else:
+            st.info(
+                "Please consult a healthcare professional for personalized advice."
+            )
+
+
+# About Project Page
+# About Project Page
+if page == "About Project":
+
+    st.title("📘 About Project")
+
+    st.write("""
+### Developer Profile
+
+I am **Abhirishi Dey**, a fourth-year Integrated B.Tech-M.Tech student in Biotechnology with a strong interest in **Artificial Intelligence, Data Science, Bioinformatics, and Precision Medicine**.
+
+### About OncoRisk AI
+
+**OncoRisk AI** is an AI-powered Cancer Risk Assessment Platform developed to estimate an individual's potential cancer risk based on key demographic and lifestyle-related factors, including:
+
+- Age
+- Smoking Habits
+- Alcohol Consumption
+- Body Mass Index (BMI)
+- Family History of Cancer
+- Physical Activity Levels
+
+This project was developed as an **end-to-end Machine Learning application**, encompassing synthetic dataset generation, data preprocessing, model development, risk prediction, and deployment through an interactive web interface.
+
+The primary objective of this project is to integrate concepts from **Biotechnology and Artificial Intelligence** to develop a practical healthcare solution while strengthening expertise in predictive analytics and machine learning.
+
+### Technologies Used
+
+- Python
+- NumPy
+- Scikit-learn
+- Streamlit
+- Joblib
+- Git & GitHub
+
+### Project Objective
+
+To create an accessible, educational, and awareness-oriented platform that demonstrates the potential application of Artificial Intelligence in personalized healthcare and cancer risk assessment.
+
+**Note:** This application is intended solely for educational and awareness purposes and should not be used for clinical diagnosis.
+    """)
+
+
+# How It Works Page
+if page == "How It Works":
+
+    st.title("⚙️ How It Works")
+
+    st.write("""
+    1. User enters lifestyle information.
+
+    2. The Machine Learning model analyzes the information.
+
+    3. The model predicts cancer risk.
+
+    4. The application displays:
+       - Low Risk
+       - Moderate Risk
+       - High Risk
+    """)
+
+
+# Disclaimer Page
+if page == "Disclaimer":
+
+    st.title("⚠️ Disclaimer")
+
+    st.warning("""
+    This application is intended only for educational purposes.
+
+    It is NOT a medical diagnostic tool.
+
+    Please consult healthcare professionals for medical advice.
+    """)
