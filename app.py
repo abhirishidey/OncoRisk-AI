@@ -4,25 +4,47 @@ import numpy as np
 
 # Load trained model
 model = joblib.load("cancer_model.pkl")
+
 # Create prediction history
 if "history" not in st.session_state:
     st.session_state.history = []
-# Sidebar Navigation    
+
+# Sidebar Navigation
 page = st.sidebar.selectbox(
     "Navigation",
-    ["Home",    
-     "Risk Assessment",
-     "Prediction History",
-     "Health Chatbot",
-     "How It Works",
-     "About Project",
-     "Disclaimer"]
+    [
+        "Home",
+        "Risk Assessment",
+        "Prediction History",
+        "Health Chatbot",
+        "About Project",
+        "How It Works",
+        "Disclaimer"
+    ]
 )
 
-# App title
-# Risk Assessment Page
-# Risk Assessment Page
-if page == "Risk Assessment":
+# ---------------- HOME PAGE ----------------
+if page == "Home":
+
+    st.title("🧬 Welcome to OncoRisk AI")
+
+    st.markdown("""
+    ## Personalized Cancer Risk Assessment Platform
+
+    OncoRisk AI is an Artificial Intelligence-powered healthcare application designed to estimate an individual's potential cancer risk based on demographic and lifestyle-related factors.
+
+    ### Key Features
+    ✅ AI-based Risk Assessment  
+    ✅ Personalized User Profiles  
+    ✅ Prediction History Tracking  
+    ✅ Interactive Health Chatbot  
+    ✅ Educational Healthcare Insights  
+
+    Navigate to the **Risk Assessment** page from the sidebar to begin your assessment.
+    """)
+
+# ---------------- RISK ASSESSMENT PAGE ----------------
+elif page == "Risk Assessment":
 
     st.title("🧬 OncoRisk AI: Personalized Cancer Risk Assessment Platform")
     st.caption("Developed by Abhirishi Dey")
@@ -31,6 +53,10 @@ if page == "Risk Assessment":
         "Enter your lifestyle details below to estimate your cancer risk."
     )
 
+    # Name Input
+    name = st.text_input("Enter Your Name")
+
+    # User Inputs
     age = st.slider("Age", 20, 80, 30)
 
     smoking = st.selectbox(
@@ -55,79 +81,93 @@ if page == "Risk Assessment":
         ["Low", "Moderate", "High"]
     )
 
-    smoking = 1 if smoking == "Yes" else 0
-    alcohol = 1 if alcohol == "Yes" else 0
-    family = 1 if family == "Yes" else 0
+    # Convert text to numbers
+    smoking_num = 1 if smoking == "Yes" else 0
+    alcohol_num = 1 if alcohol == "Yes" else 0
+    family_num = 1 if family == "Yes" else 0
 
     if activity == "Low":
-        activity = 0
+        activity_num = 0
     elif activity == "Moderate":
-        activity = 1
+        activity_num = 1
     else:
-        activity = 2
+        activity_num = 2
 
+    # Prediction Button
     if st.button("Assess Risk"):
 
-        data = np.array([
-            [age, smoking, alcohol, family, bmi, activity]
-        ])
-
-        prediction = model.predict(data)
-
-        if prediction[0] == 0:
-            risk_label = "Low Risk"
-        elif prediction[0] == 1:
-            risk_label = "Moderate Risk"
+        if name.strip() == "":
+            st.warning("Please enter your name.")
         else:
-            risk_label = "High Risk"
 
-        st.session_state.history.append({
-            "Age": age,
-            "Smoking": "Yes" if smoking == 1 else "No",
-            "Alcohol": "Yes" if alcohol == 1 else "No",
-            "BMI": bmi,
-            "Risk": risk_label
-        })
+            data = np.array([
+                [age, smoking_num, alcohol_num,
+                 family_num, bmi, activity_num]
+            ])
 
-        if prediction[0] == 0:
-            st.success("🟢 Estimated Risk: LOW")
-        elif prediction[0] == 1:
-            st.warning("🟠 Estimated Risk: MODERATE")
-        else:
-            st.error("🔴 Estimated Risk: HIGH")
+            prediction = model.predict(data)
+
+            # Risk Label
+            if prediction[0] == 0:
+                risk_label = "Low Risk"
+            elif prediction[0] == 1:
+                risk_label = "Moderate Risk"
+            else:
+                risk_label = "High Risk"
+
+            # Save Prediction History
+            st.session_state.history.append({
+                "Name": name,
+                "Age": age,
+                "Smoking": smoking,
+                "Alcohol": alcohol,
+                "BMI": bmi,
+                "Risk": risk_label
+            })
+
+            # Display Result
+            if prediction[0] == 0:
+                st.success(
+                    f"🟢 {name}, your estimated cancer risk is: LOW"
+                )
+                st.write(
+                    "Maintain a healthy lifestyle and regular health check-ups."
+                )
+
+            elif prediction[0] == 1:
+                st.warning(
+                    f"🟠 {name}, your estimated cancer risk is: MODERATE"
+                )
+                st.write(
+                    "Consider improving lifestyle habits and consulting healthcare professionals regularly."
+                )
+
+            else:
+                st.error(
+                    f"🔴 {name}, your estimated cancer risk is: HIGH"
+                )
+                st.write(
+                    "It is recommended to consult a healthcare professional for personalized screening advice."
+                )
 
     st.markdown("---")
+
     st.info(
-        "Disclaimer: This application is for educational purposes only and is not intended for medical diagnosis."
+        "Disclaimer: This application is intended for educational purposes only and should not be considered a medical diagnosis."
     )
 
-if page == "Prediction History":
+# ---------------- PREDICTION HISTORY PAGE ----------------
+elif page == "Prediction History":
 
-    st.header("📊 Prediction History")
+    st.title("📊 Prediction History")
 
     if len(st.session_state.history) == 0:
         st.info("No predictions have been made yet.")
-
     else:
         st.table(st.session_state.history)
 
-    # Home Page
-if page == "Home":
-
-    st.title("🏠 Welcome to OncoRisk AI")
-
-    st.write("""
-    OncoRisk AI is an AI-powered cancer risk assessment platform.
-
-    This application estimates an individual's cancer risk
-    based on lifestyle and demographic factors.
-
-    Navigate to 'Risk Assessment' from the sidebar to begin.
-    """)
-
-
-# Health Chatbot Page
-if page == "Health Chatbot":
+# ---------------- HEALTH CHATBOT PAGE ----------------
+elif page == "Health Chatbot":
 
     st.title("🤖 OncoAssist Chatbot")
 
@@ -159,22 +199,25 @@ if page == "Health Chatbot":
                 "Family history can influence cancer susceptibility."
             )
 
-        else:
-            st.info(
-                "Please consult a healthcare professional for personalized advice."
+        elif "weight" in q or "bmi" in q:
+            st.success(
+                "Maintaining a healthy body weight is important for reducing cancer risk."
             )
 
+        else:
+            st.info(
+                "Please consult a healthcare professional for personalized medical advice."
+            )
 
-# About Project Page
-# About Project Page
-if page == "About Project":
+# ---------------- ABOUT PROJECT PAGE ----------------
+elif page == "About Project":
 
     st.title("📘 About Project")
 
     st.write("""
 ### Developer Profile
 
-I am **Abhirishi Dey**, a fourth-year Integrated B.Tech-M.Tech student in Biotechnology with a strong interest in **Artificial Intelligence, Data Science, Bioinformatics, and Precision Medicine**.
+I am **Abhirishi Dey**, a fourth-year Integrated B.Tech-M.Tech student in Biotechnology with a strong interest in Artificial Intelligence, Data Science, Bioinformatics, and Precision Medicine.
 
 ### About OncoRisk AI
 
@@ -187,9 +230,7 @@ I am **Abhirishi Dey**, a fourth-year Integrated B.Tech-M.Tech student in Biotec
 - Family History of Cancer
 - Physical Activity Levels
 
-This project was developed as an **end-to-end Machine Learning application**, encompassing synthetic dataset generation, data preprocessing, model development, risk prediction, and deployment through an interactive web interface.
-
-The primary objective of this project is to integrate concepts from **Biotechnology and Artificial Intelligence** to develop a practical healthcare solution while strengthening expertise in predictive analytics and machine learning.
+This project was developed as an end-to-end Machine Learning application, encompassing synthetic dataset generation, data preprocessing, model development, risk prediction, and deployment through an interactive web interface.
 
 ### Technologies Used
 
@@ -202,40 +243,38 @@ The primary objective of this project is to integrate concepts from **Biotechnol
 
 ### Project Objective
 
-To create an accessible, educational, and awareness-oriented platform that demonstrates the potential application of Artificial Intelligence in personalized healthcare and cancer risk assessment.
-
-**Note:** This application is intended solely for educational and awareness purposes and should not be used for clinical diagnosis.
+To create an accessible, educational, and awareness-oriented platform demonstrating the application of Artificial Intelligence in personalized healthcare and cancer risk assessment.
     """)
 
-
-# How It Works Page
-if page == "How It Works":
+# ---------------- HOW IT WORKS PAGE ----------------
+elif page == "How It Works":
 
     st.title("⚙️ How It Works")
 
     st.write("""
-    1. User enters lifestyle information.
+1. User enters demographic and lifestyle information.
 
-    2. The Machine Learning model analyzes the information.
+2. The Machine Learning model analyzes the information.
 
-    3. The model predicts cancer risk.
+3. The trained model predicts the estimated cancer risk.
 
-    4. The application displays:
-       - Low Risk
-       - Moderate Risk
-       - High Risk
+4. The application categorizes users into:
+   - Low Risk
+   - Moderate Risk
+   - High Risk
+
+5. Personalized recommendations are displayed.
     """)
 
-
-# Disclaimer Page
-if page == "Disclaimer":
+# ---------------- DISCLAIMER PAGE ----------------
+elif page == "Disclaimer":
 
     st.title("⚠️ Disclaimer")
 
     st.warning("""
-    This application is intended only for educational purposes.
+This application is intended solely for educational and awareness purposes.
 
-    It is NOT a medical diagnostic tool.
+It is NOT a medical diagnostic tool and should not be used as a substitute for professional medical advice, diagnosis, or treatment.
 
-    Please consult healthcare professionals for medical advice.
+Users are strongly encouraged to consult qualified healthcare professionals for personalized medical guidance.
     """)
