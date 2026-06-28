@@ -266,7 +266,6 @@ elif page == "Health Chatbot":
         st.session_state.messages = []
         st.session_state.conversation_id = ""
         st.rerun()
-```
 
 # ---------------- ABOUT PROJECT PAGE ----------------
 elif page == "About Project":
