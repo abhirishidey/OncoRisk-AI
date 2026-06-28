@@ -28,106 +28,66 @@ page = st.sidebar.selectbox(
 if page == "Home":
 
     st.markdown("""
-    <style>
-    .main-title {
-        font-size: 60px;
-        font-weight: bold;
-        text-align: center;
-        color: #00C4B4;
-        margin-bottom: 0px;
-    }
-
-    .subtitle {
-        font-size: 28px;
-        text-align: center;
-        color: #B0B0B0;
-        margin-top: 0px;
-    }
-
-    .developer {
-        text-align: center;
-        font-size: 18px;
-        color: #888888;
-        margin-bottom: 30px;
-    }
-
-    .feature-box {
-        padding: 20px;
-        border-radius: 15px;
-        background-color: #262730;
-        border: 1px solid #444;
-        margin-bottom: 15px;
-    }
-    </style>
+    <div style='text-align: center; padding: 30px 0;'>
+        <h1 style='font-size: 55px; color: #2E8B57; margin-bottom: 0;'>
+            🧬 OncoRisk AI
+        </h1>
+        <h3 style='color: #6c757d; margin-top: 10px;'>
+            Personalized Cancer Risk Assessment Platform
+        </h3>
+        <p style='font-size: 18px; color: #888888;'>
+            Developed by <b>Abhirishi Dey</b>
+        </p>
+    </div>
     """, unsafe_allow_html=True)
-
-    st.markdown(
-        '<p class="main-title">🧬 OncoRisk AI</p>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<p class="subtitle">Personalized Cancer Risk Assessment Platform</p>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<p class="developer">Developed by <b>Abhirishi Dey</b></p>',
-        unsafe_allow_html=True
-    )
 
     st.markdown("---")
 
     st.markdown("""
-    <div class="feature-box">
-    <h3>🔬 AI-Powered Healthcare Intelligence</h3>
+    ### Welcome
 
-    OncoRisk AI leverages Machine Learning to estimate an individual's
-    potential cancer risk based on demographic and lifestyle factors.
+    OncoRisk AI is a personalized cancer risk assessment platform designed to provide an educational overview of an individual's potential cancer risk based on demographic and lifestyle-related factors.
 
-    The platform aims to demonstrate the application of Artificial
-    Intelligence in personalized healthcare and preventive medicine.
-    </div>
-    """, unsafe_allow_html=True)
+    The platform integrates healthcare knowledge with predictive analytics to promote awareness regarding preventive healthcare and healthy lifestyle practices.
+    """)
 
-    st.markdown("### ✨ Key Features")
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.success("AI-Based Cancer Risk Prediction")
-        st.success("Personalized User Assessment")
-        st.success("Prediction History Tracking")
-
-    with col2:
-        st.success("Interactive Health Chatbot")
-        st.success("Educational Healthcare Insights")
-        st.success("Modern Web Interface")
-
-    st.markdown("---")
+    st.markdown("### Factors Considered")
 
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.metric("Risk Factors Analysed", "6+")
+        st.info("👤 Age")
+        st.info("🚬 Smoking Habits")
 
     with col2:
-        st.metric("Machine Learning Model", "Random Forest")
+        st.info("🍷 Alcohol Consumption")
+        st.info("🧬 Family History")
 
     with col3:
-        st.metric("Platform Type", "AI Driven")
+        st.info("⚖️ Body Mass Index")
+        st.info("🏃 Physical Activity")
 
     st.markdown("---")
 
-    st.info(
-        "Navigate to the 'Risk Assessment' section from the sidebar to begin your personalized assessment."
+    st.markdown("### Key Features")
+
+    st.write("""
+    ✓ Personalized Risk Assessment  
+    ✓ Interactive Health Chatbot  
+    ✓ Prediction History Tracking  
+    ✓ User-Friendly Interface  
+    ✓ Educational Healthcare Insights  
+    """)
+
+    st.markdown("---")
+
+    st.success(
+        "Navigate to the 'Risk Assessment' section from the sidebar to begin your assessment."
     )
 
-    st.markdown(
-        "<center>© 2026 OncoRisk AI | Developed by Abhirishi Dey</center>",
-        unsafe_allow_html=True
+    st.caption(
+        "© 2026 OncoRisk AI | Developed by Abhirishi Dey"
     )
-
 # ---------------- RISK ASSESSMENT PAGE ----------------
 elif page == "Risk Assessment":
 
