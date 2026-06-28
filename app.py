@@ -186,13 +186,19 @@ elif page == "Health Chatbot":
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
+    if "user_input" not in st.session_state:
+        st.session_state.user_input = ""
+
+    # Chat Input
     user_query = st.text_input(
-        "Ask a healthcare-related question:"
+        "Ask a healthcare-related question:",
+        key="user_input"
     )
 
+    # Send button
     if st.button("Ask"):
 
-        if user_query:
+        if user_query.strip() != "":
 
             API_KEY = "app-cLSVgkouuMoxkDvK7AP6oAVB"
 
@@ -217,13 +223,11 @@ elif page == "Health Chatbot":
                 json=payload
             )
 
-            # DEBUGGING
-            st.write("Status Code:", response.status_code)
-
             if response.status_code == 200:
 
                 result = response.json()
 
+                # Save conversation ID
                 st.session_state.conversation_id = result.get(
                     "conversation_id", ""
                 )
@@ -233,18 +237,31 @@ elif page == "Health Chatbot":
                     "No answer received."
                 )
 
-                st.session_state.messages.append(
-                    {"role": "user", "content": user_query}
-                )
+                # Save messages
+                st.session_state.messages.append({
+                    "role": "user",
+                    "content": user_query
+                })
 
-                st.session_state.messages.append(
-                    {"role": "assistant", "content": answer}
-                )
+                st.session_state.messages.append({
+                    "role": "assistant",
+                    "content": answer
+                })
+
+                # Clear textbox
+                st.session_state.user_input = ""
+
+                # Refresh page
+                st.rerun()
 
             else:
-                st.error(response.text)
+                st.error(
+                    f"Error {response.status_code}: {response.text}"
+                )
 
-    # Display chat history
+    st.markdown("---")
+
+    # Display Chat History
     for msg in st.session_state.messages:
 
         if msg["role"] == "user":
@@ -254,6 +271,15 @@ elif page == "Health Chatbot":
         else:
             with st.chat_message("assistant"):
                 st.write(msg["content"])
+
+    # Clear Chat Button
+    if st.button("🗑️ Clear Chat History"):
+
+        st.session_state.messages = []
+        st.session_state.conversation_id = ""
+        st.rerun()
+
+
 # ---------------- ABOUT PROJECT PAGE ----------------
 elif page == "About Project":
 
