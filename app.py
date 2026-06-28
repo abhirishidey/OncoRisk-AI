@@ -1,8 +1,15 @@
 import streamlit as st
+
+st.set_page_config(
+    page_title="OncoRisk AI",
+    page_icon="🧬",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 import joblib
 import numpy as np
 import requests
-
 # Load trained model
 model = joblib.load("cancer_model.pkl")
 
