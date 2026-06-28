@@ -24,24 +24,109 @@ page = st.sidebar.selectbox(
 )
 
 # ---------------- HOME PAGE ----------------
+# ---------------- HOME PAGE ----------------
 if page == "Home":
 
-    st.title("🧬 Welcome to OncoRisk AI")
+    st.markdown("""
+    <style>
+    .main-title {
+        font-size: 60px;
+        font-weight: bold;
+        text-align: center;
+        color: #00C4B4;
+        margin-bottom: 0px;
+    }
+
+    .subtitle {
+        font-size: 28px;
+        text-align: center;
+        color: #B0B0B0;
+        margin-top: 0px;
+    }
+
+    .developer {
+        text-align: center;
+        font-size: 18px;
+        color: #888888;
+        margin-bottom: 30px;
+    }
+
+    .feature-box {
+        padding: 20px;
+        border-radius: 15px;
+        background-color: #262730;
+        border: 1px solid #444;
+        margin-bottom: 15px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown(
+        '<p class="main-title">🧬 OncoRisk AI</p>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '<p class="subtitle">Personalized Cancer Risk Assessment Platform</p>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '<p class="developer">Developed by <b>Abhirishi Dey</b></p>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown("---")
 
     st.markdown("""
-    ## Personalized Cancer Risk Assessment Platform
+    <div class="feature-box">
+    <h3>🔬 AI-Powered Healthcare Intelligence</h3>
 
-    OncoRisk AI is an Artificial Intelligence-powered healthcare application designed to estimate an individual's potential cancer risk based on demographic and lifestyle-related factors.
+    OncoRisk AI leverages Machine Learning to estimate an individual's
+    potential cancer risk based on demographic and lifestyle factors.
 
-    ### Key Features
-    ✅ AI-based Risk Assessment  
-    ✅ Personalized User Profiles  
-    ✅ Prediction History Tracking  
-    ✅ Interactive Health Chatbot  
-    ✅ Educational Healthcare Insights  
+    The platform aims to demonstrate the application of Artificial
+    Intelligence in personalized healthcare and preventive medicine.
+    </div>
+    """, unsafe_allow_html=True)
 
-    Navigate to the **Risk Assessment** page from the sidebar to begin your assessment.
-    """)
+    st.markdown("### ✨ Key Features")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.success("AI-Based Cancer Risk Prediction")
+        st.success("Personalized User Assessment")
+        st.success("Prediction History Tracking")
+
+    with col2:
+        st.success("Interactive Health Chatbot")
+        st.success("Educational Healthcare Insights")
+        st.success("Modern Web Interface")
+
+    st.markdown("---")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric("Risk Factors Analysed", "6+")
+
+    with col2:
+        st.metric("Machine Learning Model", "Random Forest")
+
+    with col3:
+        st.metric("Platform Type", "AI Driven")
+
+    st.markdown("---")
+
+    st.info(
+        "Navigate to the 'Risk Assessment' section from the sidebar to begin your personalized assessment."
+    )
+
+    st.markdown(
+        "<center>© 2026 OncoRisk AI | Developed by Abhirishi Dey</center>",
+        unsafe_allow_html=True
+    )
 
 # ---------------- RISK ASSESSMENT PAGE ----------------
 elif page == "Risk Assessment":
