@@ -208,7 +208,7 @@ elif page == "Health Chatbot":
         with st.chat_message("user"):
             st.write(user_query)
 
-        API_KEY = "app-cLSVgkouuMoxkDvK7AP6oAVB"
+        API_KEY = "app-SO5ookGZ44xOm8k1qxJOrKJm"
 
         url = "https://api.dify.ai/v1/chat-messages"
 
