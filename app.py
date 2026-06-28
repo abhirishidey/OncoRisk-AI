@@ -1,6 +1,7 @@
 import streamlit as st
 import joblib
 import numpy as np
+import requests
 
 # Load trained model
 model = joblib.load("cancer_model.pkl")
@@ -24,70 +25,25 @@ page = st.sidebar.selectbox(
 )
 
 # ---------------- HOME PAGE ----------------
-# ---------------- HOME PAGE ----------------
 if page == "Home":
 
-    st.markdown("""
-    <div style='text-align: center; padding: 30px 0;'>
-        <h1 style='font-size: 55px; color: #2E8B57; margin-bottom: 0;'>
-            🧬 OncoRisk AI
-        </h1>
-        <h3 style='color: #6c757d; margin-top: 10px;'>
-            Personalized Cancer Risk Assessment Platform
-        </h3>
-        <p style='font-size: 18px; color: #888888;'>
-            Developed by <b>Abhirishi Dey</b>
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("---")
+    st.title("🧬 Welcome to OncoRisk AI")
 
     st.markdown("""
-    ### Welcome
+    ## Personalized Cancer Risk Assessment Platform
 
-    OncoRisk AI is a personalized cancer risk assessment platform designed to provide an educational overview of an individual's potential cancer risk based on demographic and lifestyle-related factors.
+    OncoRisk AI is an Artificial Intelligence-powered healthcare application designed to estimate an individual's potential cancer risk based on demographic and lifestyle-related factors.
 
-    The platform integrates healthcare knowledge with predictive analytics to promote awareness regarding preventive healthcare and healthy lifestyle practices.
+    ### Key Features
+    ✅ AI-based Risk Assessment  
+    ✅ Personalized User Profiles  
+    ✅ Prediction History Tracking  
+    ✅ Interactive Health Chatbot  
+    ✅ Educational Healthcare Insights  
+
+    Navigate to the **Risk Assessment** page from the sidebar to begin your assessment.
     """)
 
-    st.markdown("### Factors Considered")
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.info("👤 Age")
-        st.info("🚬 Smoking Habits")
-
-    with col2:
-        st.info("🍷 Alcohol Consumption")
-        st.info("🧬 Family History")
-
-    with col3:
-        st.info("⚖️ Body Mass Index")
-        st.info("🏃 Physical Activity")
-
-    st.markdown("---")
-
-    st.markdown("### Key Features")
-
-    st.write("""
-    ✓ Personalized Risk Assessment  
-    ✓ Interactive Health Chatbot  
-    ✓ Prediction History Tracking  
-    ✓ User-Friendly Interface  
-    ✓ Educational Healthcare Insights  
-    """)
-
-    st.markdown("---")
-
-    st.success(
-        "Navigate to the 'Risk Assessment' section from the sidebar to begin your assessment."
-    )
-
-    st.caption(
-        "© 2026 OncoRisk AI | Developed by Abhirishi Dey"
-    )
 # ---------------- RISK ASSESSMENT PAGE ----------------
 elif page == "Risk Assessment":
 
@@ -214,45 +170,46 @@ elif page == "Prediction History":
 # ---------------- HEALTH CHATBOT PAGE ----------------
 elif page == "Health Chatbot":
 
-    st.title("🤖 OncoAssist Chatbot")
+    st.title("🤖 OncoAssist")
 
-    question = st.text_input(
-        "Ask a health-related question:"
+    user_query = st.text_input(
+        "Ask a healthcare-related question:"
     )
 
     if st.button("Ask"):
 
-        q = question.lower()
+        if user_query:
 
-        if "smoking" in q:
-            st.success(
-                "Smoking is a major risk factor for several cancers."
+            API_KEY = "app-zwMG3eXjPDwJ091cndxghK1D"
+
+            url = "https://api.dify.ai/v1/chat-messages"
+
+            headers = {
+                "Authorization": f"Bearer {API_KEY}",
+                "Content-Type": "application/json"
+            }
+
+            payload = {
+                "inputs": {},
+                "query": user_query,
+                "response_mode": "blocking",
+                "conversation_id": "",
+                "user": "streamlit-user"
+            }
+
+            response = requests.post(
+                url,
+                headers=headers,
+                json=payload
             )
 
-        elif "exercise" in q:
-            st.success(
-                "Regular physical activity may reduce cancer risk."
-            )
+            if response.status_code == 200:
+                answer = response.json()["answer"]
+                st.success(answer)
 
-        elif "alcohol" in q:
-            st.success(
-                "Excessive alcohol consumption can increase cancer risk."
-            )
-
-        elif "family" in q:
-            st.success(
-                "Family history can influence cancer susceptibility."
-            )
-
-        elif "weight" in q or "bmi" in q:
-            st.success(
-                "Maintaining a healthy body weight is important for reducing cancer risk."
-            )
-
-        else:
-            st.info(
-                "Please consult a healthcare professional for personalized medical advice."
-            )
+            else:
+                st.error(f"Error: {response.status_code}")
+                st.write(response.text)
 
 # ---------------- ABOUT PROJECT PAGE ----------------
 elif page == "About Project":
