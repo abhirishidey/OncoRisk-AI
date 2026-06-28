@@ -179,12 +179,12 @@ elif page == "🤖 Health Chatbot":
 
     st.title("🤖 OncoAssist")
 
-    # Create conversation storage
+    # Create storage for conversation
     if "conversation_id" not in st.session_state:
         st.session_state.conversation_id = ""
 
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = []
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
 
     user_query = st.text_input(
         "Ask a healthcare-related question:"
@@ -217,39 +217,43 @@ elif page == "🤖 Health Chatbot":
                 json=payload
             )
 
+            # DEBUGGING
+            st.write("Status Code:", response.status_code)
+
             if response.status_code == 200:
 
                 result = response.json()
 
-                # Save conversation ID
                 st.session_state.conversation_id = result.get(
                     "conversation_id", ""
                 )
 
-                answer = result["answer"]
-
-                # Save history
-                st.session_state.chat_history.append(
-                    ("You", user_query)
+                answer = result.get(
+                    "answer",
+                    "No answer received."
                 )
 
-                st.session_state.chat_history.append(
-                    ("OncoAssist", answer)
+                st.session_state.messages.append(
+                    {"role": "user", "content": user_query}
+                )
+
+                st.session_state.messages.append(
+                    {"role": "assistant", "content": answer}
                 )
 
             else:
                 st.error(response.text)
 
-    # Display full chat history
-    st.markdown("---")
+    # Display chat history
+    for msg in st.session_state.messages:
 
-    for sender, message in st.session_state.chat_history:
-
-        if sender == "You":
-            st.chat_message("user").write(message)
+        if msg["role"] == "user":
+            with st.chat_message("user"):
+                st.write(msg["content"])
 
         else:
-            st.chat_message("assistant").write(message)
+            with st.chat_message("assistant"):
+                st.write(msg["content"])
 # ---------------- ABOUT PROJECT PAGE ----------------
 elif page == "About Project":
 
