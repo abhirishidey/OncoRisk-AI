@@ -175,7 +175,7 @@ elif page == "Prediction History":
         st.table(st.session_state.history)
 
 # ---------------- HEALTH CHATBOT PAGE ----------------
-elif page == "🤖 Health Chatbot":
+elif page == "Health Chatbot":
 
     st.title("🤖 OncoAssist")
 
