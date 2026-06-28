@@ -178,6 +178,7 @@ elif page == "Prediction History":
 elif page == "Health Chatbot":
 
     st.title("🤖 OncoAssist")
+    st.caption("AI-powered healthcare assistant")
 
     # Create storage for conversation
     if "conversation_id" not in st.session_state:
@@ -186,99 +187,86 @@ elif page == "Health Chatbot":
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
-    if "user_input" not in st.session_state:
-        st.session_state.user_input = ""
+    # Display previous chat history
+    for msg in st.session_state.messages:
 
-    # Chat Input
-    user_query = st.text_input(
-        "Ask a healthcare-related question:",
-        key="user_input"
+        with st.chat_message(msg["role"]):
+            st.write(msg["content"])
+
+    # Chat input (automatically clears after sending)
+    user_query = st.chat_input(
+        "Ask a healthcare-related question..."
     )
 
-    # Send button
-    if st.button("Ask"):
+    if user_query:
 
-        if user_query.strip() != "":
+        # Show user message immediately
+        st.session_state.messages.append(
+            {"role": "user", "content": user_query}
+        )
 
-            API_KEY = "app-cLSVgkouuMoxkDvK7AP6oAVB"
+        with st.chat_message("user"):
+            st.write(user_query)
 
-            url = "https://api.dify.ai/v1/chat-messages"
+        API_KEY = "app-cLSVgkouuMoxkDvK7AP6oAVB"
 
-            headers = {
-                "Authorization": f"Bearer {API_KEY}",
-                "Content-Type": "application/json"
-            }
+        url = "https://api.dify.ai/v1/chat-messages"
 
-            payload = {
-                "inputs": {},
-                "query": user_query,
-                "response_mode": "blocking",
-                "conversation_id": st.session_state.conversation_id,
-                "user": "streamlit-user"
-            }
+        headers = {
+            "Authorization": f"Bearer {API_KEY}",
+            "Content-Type": "application/json"
+        }
 
-            response = requests.post(
-                url,
-                headers=headers,
-                json=payload
+        payload = {
+            "inputs": {},
+            "query": user_query,
+            "response_mode": "blocking",
+            "conversation_id": st.session_state.conversation_id,
+            "user": "streamlit-user"
+        }
+
+        response = requests.post(
+            url,
+            headers=headers,
+            json=payload
+        )
+
+        if response.status_code == 200:
+
+            result = response.json()
+
+            # Save conversation ID
+            st.session_state.conversation_id = result.get(
+                "conversation_id", ""
             )
 
-            if response.status_code == 200:
+            answer = result.get(
+                "answer",
+                "No answer received."
+            )
 
-                result = response.json()
+            # Save assistant response
+            st.session_state.messages.append(
+                {"role": "assistant", "content": answer}
+            )
 
-                # Save conversation ID
-                st.session_state.conversation_id = result.get(
-                    "conversation_id", ""
-                )
+            with st.chat_message("assistant"):
+                st.write(answer)
 
-                answer = result.get(
-                    "answer",
-                    "No answer received."
-                )
-
-                # Save messages
-                st.session_state.messages.append({
-                    "role": "user",
-                    "content": user_query
-                })
-
-                st.session_state.messages.append({
-                    "role": "assistant",
-                    "content": answer
-                })
-
-                # Clear textbox
-                st.session_state.user_input = ""
-
-                # Refresh page
-                st.rerun()
-
-            else:
-                st.error(
-                    f"Error {response.status_code}: {response.text}"
-                )
+        else:
+            st.error(
+                f"Error {response.status_code}: {response.text}"
+            )
 
     st.markdown("---")
 
-    # Display Chat History
-    for msg in st.session_state.messages:
-
-        if msg["role"] == "user":
-            with st.chat_message("user"):
-                st.write(msg["content"])
-
-        else:
-            with st.chat_message("assistant"):
-                st.write(msg["content"])
-
-    # Clear Chat Button
+    # Clear chat button
     if st.button("🗑️ Clear Chat History"):
 
         st.session_state.messages = []
         st.session_state.conversation_id = ""
         st.rerun()
-
+```
 
 # ---------------- ABOUT PROJECT PAGE ----------------
 elif page == "About Project":
