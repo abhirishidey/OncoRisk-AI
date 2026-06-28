@@ -175,9 +175,16 @@ elif page == "Prediction History":
         st.table(st.session_state.history)
 
 # ---------------- HEALTH CHATBOT PAGE ----------------
-elif page == "Health Chatbot":
+elif page == "🤖 Health Chatbot":
 
     st.title("🤖 OncoAssist")
+
+    # Create conversation storage
+    if "conversation_id" not in st.session_state:
+        st.session_state.conversation_id = ""
+
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
 
     user_query = st.text_input(
         "Ask a healthcare-related question:"
@@ -200,7 +207,7 @@ elif page == "Health Chatbot":
                 "inputs": {},
                 "query": user_query,
                 "response_mode": "blocking",
-                "conversation_id": "",
+                "conversation_id": st.session_state.conversation_id,
                 "user": "streamlit-user"
             }
 
@@ -211,13 +218,38 @@ elif page == "Health Chatbot":
             )
 
             if response.status_code == 200:
-                answer = response.json()["answer"]
-                st.success(answer)
+
+                result = response.json()
+
+                # Save conversation ID
+                st.session_state.conversation_id = result.get(
+                    "conversation_id", ""
+                )
+
+                answer = result["answer"]
+
+                # Save history
+                st.session_state.chat_history.append(
+                    ("You", user_query)
+                )
+
+                st.session_state.chat_history.append(
+                    ("OncoAssist", answer)
+                )
 
             else:
-                st.error(f"Error: {response.status_code}")
-                st.write(response.text)
+                st.error(response.text)
 
+    # Display full chat history
+    st.markdown("---")
+
+    for sender, message in st.session_state.chat_history:
+
+        if sender == "You":
+            st.chat_message("user").write(message)
+
+        else:
+            st.chat_message("assistant").write(message)
 # ---------------- ABOUT PROJECT PAGE ----------------
 elif page == "About Project":
 
