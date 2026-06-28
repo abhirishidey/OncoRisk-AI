@@ -180,7 +180,7 @@ elif page == "Health Chatbot":
 
         if user_query:
 
-            API_KEY = "app-zwMG3eXjPDwJ091cndxghK1D"
+            API_KEY = "app-cLSVgkouuMoxkDvK7AP6oAVB"
 
             url = "https://api.dify.ai/v1/chat-messages"
 
