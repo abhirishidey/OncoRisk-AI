@@ -1,5 +1,3 @@
-
-from PIL import Image
 import streamlit as st
 
 st.set_page_config(
@@ -36,55 +34,22 @@ page = st.sidebar.selectbox(
 # ---------------- HOME PAGE ----------------
 if page == "Home":
 
-    image = Image.open("hero.png")
-    st.image(image, use_container_width=True)
+    st.title("🧬 Welcome to OncoRisk AI")
 
     st.markdown("""
-    <div style='text-align:center;'>
+    ## Personalized Cancer Risk Assessment Platform
 
-    <h1 style='font-size:55px; color:#0EA5E9;'>
-    Welcome to OncoRisk AI
-    </h1>
+    OncoRisk AI is an Artificial Intelligence-powered healthcare application designed to estimate an individual's potential cancer risk based on demographic and lifestyle-related factors.
 
-    <h3 style='color:gray;'>
-    Personalized Cancer Risk Assessment Platform
-    </h3>
+    ### Key Features
+    ✅ AI-based Risk Assessment  
+    ✅ Personalized User Profiles  
+    ✅ Prediction History Tracking  
+    ✅ Interactive Health Chatbot  
+    ✅ Educational Healthcare Insights  
 
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("---")
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.info("""
-        ### 🧠 AI-Powered Prediction
-
-        Advanced Machine Learning models analyze lifestyle factors to estimate cancer risk.
-        """)
-
-    with col2:
-        st.info("""
-        ### 📊 Track Your History
-
-        Store and review previous cancer risk assessments.
-        """)
-
-    with col3:
-        st.info("""
-        ### 🤖 Health Chatbot
-
-        Ask healthcare-related questions through OncoAssist.
-        """)
-
-    st.markdown("---")
-
-    st.success(
-        "👈 Use the navigation panel on the left to begin your assessment."
-    )
-
-    st.caption("Developed by Abhirishi Dey")
+    Navigate to the **Risk Assessment** page from the sidebar to begin your assessment.
+    """)
 
 # ---------------- RISK ASSESSMENT PAGE ----------------
 elif page == "Risk Assessment":
@@ -301,6 +266,7 @@ elif page == "Health Chatbot":
         st.session_state.messages = []
         st.session_state.conversation_id = ""
         st.rerun()
+```
 
 # ---------------- ABOUT PROJECT PAGE ----------------
 elif page == "About Project":
