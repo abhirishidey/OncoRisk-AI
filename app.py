@@ -52,117 +52,75 @@ if page == "Home":
     """)
 
 # ---------------- RISK ASSESSMENT PAGE ----------------
-elif page == "Risk Assessment":
+```python
+# ---------------- HOME PAGE ----------------
+if page == "Home":
 
-    st.title("🧬 OncoRisk AI: Personalized Cancer Risk Assessment Platform")
-    st.caption("Developed by Abhirishi Dey")
+    try:
+        image = Image.open("hero.png")
+        st.image(image, use_container_width=True)
+    except:
+        st.warning("Hero image not found.")
 
-    st.write(
-        "Enter your lifestyle details below to estimate your cancer risk."
-    )
+    st.markdown("""
+    <div style='text-align:center; padding:20px;'>
 
-    # Name Input
-    name = st.text_input("Enter Your Name")
+        <h1 style='font-size:65px;
+                   color:#38bdf8;
+                   font-weight:800;'>
+            🧬 OncoRisk AI
+        </h1>
 
-    # User Inputs
-    age = st.slider("Age", 20, 80, 30)
+        <h3 style='color:#cbd5e1;'>
+            Personalized Cancer Risk Assessment Platform
+        </h3>
 
-    smoking = st.selectbox(
-        "Do you smoke?",
-        ["No", "Yes"]
-    )
+        <p style='font-size:20px;
+                  color:#94a3b8;'>
+            Developed by <b>Abhirishi Dey</b>
+        </p>
 
-    alcohol = st.selectbox(
-        "Do you consume alcohol regularly?",
-        ["No", "Yes"]
-    )
+    </div>
+    """, unsafe_allow_html=True)
 
-    family = st.selectbox(
-        "Do you have a family history of cancer?",
-        ["No", "Yes"]
-    )
+    st.markdown("---")
 
-    bmi = st.slider("BMI", 18.0, 40.0, 24.0)
+    col1, col2, col3 = st.columns(3)
 
-    activity = st.selectbox(
-        "Physical Activity Level",
-        ["Low", "Moderate", "High"]
-    )
+    with col1:
+        st.info("""
+        ### 🧠 AI-Powered Prediction
 
-    # Convert text to numbers
-    smoking_num = 1 if smoking == "Yes" else 0
-    alcohol_num = 1 if alcohol == "Yes" else 0
-    family_num = 1 if family == "Yes" else 0
+        Advanced Machine Learning algorithms analyze lifestyle and demographic factors to estimate cancer risk.
+        """)
 
-    if activity == "Low":
-        activity_num = 0
-    elif activity == "Moderate":
-        activity_num = 1
-    else:
-        activity_num = 2
+    with col2:
+        st.info("""
+        ### 📊 Prediction History
 
-    # Prediction Button
-    if st.button("Assess Risk"):
+        Securely review and track previous cancer risk assessments.
+        """)
 
-        if name.strip() == "":
-            st.warning("Please enter your name.")
-        else:
+    with col3:
+        st.info("""
+        ### 🤖 OncoAssist Chatbot
 
-            data = np.array([
-                [age, smoking_num, alcohol_num,
-                 family_num, bmi, activity_num]
-            ])
-
-            prediction = model.predict(data)
-
-            # Risk Label
-            if prediction[0] == 0:
-                risk_label = "Low Risk"
-            elif prediction[0] == 1:
-                risk_label = "Moderate Risk"
-            else:
-                risk_label = "High Risk"
-
-            # Save Prediction History
-            st.session_state.history.append({
-                "Name": name,
-                "Age": age,
-                "Smoking": smoking,
-                "Alcohol": alcohol,
-                "BMI": bmi,
-                "Risk": risk_label
-            })
-
-            # Display Result
-            if prediction[0] == 0:
-                st.success(
-                    f"🟢 {name}, your estimated cancer risk is: LOW"
-                )
-                st.write(
-                    "Maintain a healthy lifestyle and regular health check-ups."
-                )
-
-            elif prediction[0] == 1:
-                st.warning(
-                    f"🟠 {name}, your estimated cancer risk is: MODERATE"
-                )
-                st.write(
-                    "Consider improving lifestyle habits and consulting healthcare professionals regularly."
-                )
-
-            else:
-                st.error(
-                    f"🔴 {name}, your estimated cancer risk is: HIGH"
-                )
-                st.write(
-                    "It is recommended to consult a healthcare professional for personalized screening advice."
-                )
+        Interact with an AI-powered healthcare assistant for educational insights.
+        """)
 
     st.markdown("---")
 
     st.info(
-        "Disclaimer: This application is intended for educational purposes only and should not be considered a medical diagnosis."
+        "👈 Use the navigation panel on the left to access Risk Assessment, Prediction History, and OncoAssist."
     )
+
+    st.markdown("""
+    <div style='text-align:center; color:gray;'>
+        <p>Integrating Artificial Intelligence and Healthcare for Personalized Risk Assessment</p>
+    </div>
+    """, unsafe_allow_html=True)
+```
+
 
 # ---------------- PREDICTION HISTORY PAGE ----------------
 elif page == "Prediction History":
