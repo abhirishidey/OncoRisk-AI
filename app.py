@@ -53,7 +53,16 @@ if page == "Home":
     """)
 
 # ---------------- PREDICTION HISTORY PAGE ----------------
+elif page == "Prediction History":
 
+    st.title("📊 Prediction History")
+    st.caption("Developed by Abhirishi Dey")
+
+    if len(st.session_state.history) == 0:
+        st.info("No predictions have been made yet.")
+
+    else:
+        st.table(st.session_state.history)
 # ---------------- RISK ASSESSMENT PAGE ----------------
 elif page == "Risk Assessment":
 
@@ -92,7 +101,7 @@ elif page == "Risk Assessment":
         ["Low", "Moderate", "High"]
     )
 
-    # Convert text inputs to numerical values
+    # Convert inputs to numbers
     smoking_num = 1 if smoking == "Yes" else 0
     alcohol_num = 1 if alcohol == "Yes" else 0
     family_num = 1 if family == "Yes" else 0
@@ -104,7 +113,7 @@ elif page == "Risk Assessment":
     else:
         activity_num = 2
 
-    # Prediction Button
+    # Prediction
     if st.button("Assess Risk"):
 
         if name.strip() == "":
@@ -125,41 +134,34 @@ elif page == "Risk Assessment":
 
             prediction = model.predict(data)
 
-            # Determine Risk Label
             if prediction[0] == 0:
                 risk_label = "Low Risk"
-
                 st.success(
                     f"🟢 {name}, your estimated cancer risk is: LOW"
                 )
-
                 st.write(
                     "Maintain a healthy lifestyle and regular health check-ups."
                 )
 
             elif prediction[0] == 1:
                 risk_label = "Moderate Risk"
-
                 st.warning(
                     f"🟠 {name}, your estimated cancer risk is: MODERATE"
                 )
-
                 st.write(
                     "Consider improving lifestyle habits and consulting healthcare professionals regularly."
                 )
 
             else:
                 risk_label = "High Risk"
-
                 st.error(
                     f"🔴 {name}, your estimated cancer risk is: HIGH"
                 )
-
                 st.write(
                     "It is recommended to consult a healthcare professional for personalized screening advice."
                 )
 
-            # Save prediction history
+            # Save history
             st.session_state.history.append({
                 "Name": name,
                 "Age": age,
@@ -174,8 +176,6 @@ elif page == "Risk Assessment":
     st.info(
         "Disclaimer: This application is intended for educational purposes only and should not be considered a medical diagnosis."
     )
-```
-
 
 # ---------------- HEALTH CHATBOT PAGE ----------------
 elif page == "Health Chatbot":
