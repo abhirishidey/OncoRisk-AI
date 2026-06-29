@@ -53,7 +53,7 @@ if page == "Home":
     """)
 
 # ---------------- PREDICTION HISTORY PAGE ----------------
-```python
+
 # ---------------- RISK ASSESSMENT PAGE ----------------
 elif page == "Risk Assessment":
 
