@@ -53,14 +53,129 @@ if page == "Home":
     """)
 
 # ---------------- PREDICTION HISTORY PAGE ----------------
-elif page == "Prediction History":
+```python
+# ---------------- RISK ASSESSMENT PAGE ----------------
+elif page == "Risk Assessment":
 
-    st.title("📊 Prediction History")
+    st.title("🧬 OncoRisk AI: Personalized Cancer Risk Assessment Platform")
+    st.caption("Developed by Abhirishi Dey")
 
-    if len(st.session_state.history) == 0:
-        st.info("No predictions have been made yet.")
+    st.write(
+        "Enter your lifestyle details below to estimate your cancer risk."
+    )
+
+    # Name Input
+    name = st.text_input("Enter Your Name")
+
+    # User Inputs
+    age = st.slider("Age", 20, 80, 30)
+
+    smoking = st.selectbox(
+        "Do you smoke?",
+        ["No", "Yes"]
+    )
+
+    alcohol = st.selectbox(
+        "Do you consume alcohol regularly?",
+        ["No", "Yes"]
+    )
+
+    family = st.selectbox(
+        "Do you have a family history of cancer?",
+        ["No", "Yes"]
+    )
+
+    bmi = st.slider("BMI", 18.0, 40.0, 24.0)
+
+    activity = st.selectbox(
+        "Physical Activity Level",
+        ["Low", "Moderate", "High"]
+    )
+
+    # Convert text inputs to numerical values
+    smoking_num = 1 if smoking == "Yes" else 0
+    alcohol_num = 1 if alcohol == "Yes" else 0
+    family_num = 1 if family == "Yes" else 0
+
+    if activity == "Low":
+        activity_num = 0
+    elif activity == "Moderate":
+        activity_num = 1
     else:
-        st.table(st.session_state.history)
+        activity_num = 2
+
+    # Prediction Button
+    if st.button("Assess Risk"):
+
+        if name.strip() == "":
+            st.warning("Please enter your name.")
+
+        else:
+
+            data = np.array([
+                [
+                    age,
+                    smoking_num,
+                    alcohol_num,
+                    family_num,
+                    bmi,
+                    activity_num
+                ]
+            ])
+
+            prediction = model.predict(data)
+
+            # Determine Risk Label
+            if prediction[0] == 0:
+                risk_label = "Low Risk"
+
+                st.success(
+                    f"🟢 {name}, your estimated cancer risk is: LOW"
+                )
+
+                st.write(
+                    "Maintain a healthy lifestyle and regular health check-ups."
+                )
+
+            elif prediction[0] == 1:
+                risk_label = "Moderate Risk"
+
+                st.warning(
+                    f"🟠 {name}, your estimated cancer risk is: MODERATE"
+                )
+
+                st.write(
+                    "Consider improving lifestyle habits and consulting healthcare professionals regularly."
+                )
+
+            else:
+                risk_label = "High Risk"
+
+                st.error(
+                    f"🔴 {name}, your estimated cancer risk is: HIGH"
+                )
+
+                st.write(
+                    "It is recommended to consult a healthcare professional for personalized screening advice."
+                )
+
+            # Save prediction history
+            st.session_state.history.append({
+                "Name": name,
+                "Age": age,
+                "Smoking": smoking,
+                "Alcohol": alcohol,
+                "BMI": bmi,
+                "Risk": risk_label
+            })
+
+    st.markdown("---")
+
+    st.info(
+        "Disclaimer: This application is intended for educational purposes only and should not be considered a medical diagnosis."
+    )
+```
+
 
 # ---------------- HEALTH CHATBOT PAGE ----------------
 elif page == "Health Chatbot":
