@@ -34,28 +34,6 @@ page = st.sidebar.selectbox(
 # ---------------- HOME PAGE ----------------
 if page == "Home":
 
-    st.title("🧬 Welcome to OncoRisk AI")
-
-    st.markdown("""
-    ## Personalized Cancer Risk Assessment Platform
-
-    OncoRisk AI is an Artificial Intelligence-powered healthcare application designed to estimate an individual's potential cancer risk based on demographic and lifestyle-related factors.
-
-    ### Key Features
-    ✅ AI-based Risk Assessment  
-    ✅ Personalized User Profiles  
-    ✅ Prediction History Tracking  
-    ✅ Interactive Health Chatbot  
-    ✅ Educational Healthcare Insights  
-
-    Navigate to the **Risk Assessment** page from the sidebar to begin your assessment.
-    """)
-
-# ---------------- RISK ASSESSMENT PAGE ----------------
-```python
-# ---------------- HOME PAGE ----------------
-if page == "Home":
-
     try:
         image = Image.open("hero.png")
         st.image(image, use_container_width=True)
