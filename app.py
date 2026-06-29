@@ -34,70 +34,23 @@ page = st.sidebar.selectbox(
 # ---------------- HOME PAGE ----------------
 if page == "Home":
 
-    try:
-        image = Image.open("hero.png")
-        st.image(image, use_container_width=True)
-    except:
-        st.warning("Hero image not found.")
+    st.title("🧬 Welcome to OncoRisk AI")
+    st.caption("Developed by Abhirishi Dey")
 
     st.markdown("""
-    <div style='text-align:center; padding:20px;'>
+    ## Personalized Cancer Risk Assessment Platform
 
-        <h1 style='font-size:65px;
-                   color:#38bdf8;
-                   font-weight:800;'>
-            🧬 OncoRisk AI
-        </h1>
+    OncoRisk AI is an Artificial Intelligence-powered healthcare application designed to estimate an individual's potential cancer risk based on demographic and lifestyle-related factors.
 
-        <h3 style='color:#cbd5e1;'>
-            Personalized Cancer Risk Assessment Platform
-        </h3>
+    ### Key Features
+    ✅ AI-based Risk Assessment  
+    ✅ Personalized User Profiles  
+    ✅ Prediction History Tracking  
+    ✅ Interactive Health Chatbot  
+    ✅ Educational Healthcare Insights  
 
-        <p style='font-size:20px;
-                  color:#94a3b8;'>
-            Developed by <b>Abhirishi Dey</b>
-        </p>
-
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("---")
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.info("""
-        ### 🧠 AI-Powered Prediction
-
-        Advanced Machine Learning algorithms analyze lifestyle and demographic factors to estimate cancer risk.
-        """)
-
-    with col2:
-        st.info("""
-        ### 📊 Prediction History
-
-        Securely review and track previous cancer risk assessments.
-        """)
-
-    with col3:
-        st.info("""
-        ### 🤖 OncoAssist Chatbot
-
-        Interact with an AI-powered healthcare assistant for educational insights.
-        """)
-
-    st.markdown("---")
-
-    st.info(
-        "👈 Use the navigation panel on the left to access Risk Assessment, Prediction History, and OncoAssist."
-    )
-
-    st.markdown("""
-    <div style='text-align:center; color:gray;'>
-        <p>Integrating Artificial Intelligence and Healthcare for Personalized Risk Assessment</p>
-    </div>
-    """, unsafe_allow_html=True)
-
+    Navigate to the **Risk Assessment** page from the sidebar to begin your assessment.
+    """)
 
 # ---------------- PREDICTION HISTORY PAGE ----------------
 elif page == "Prediction History":
