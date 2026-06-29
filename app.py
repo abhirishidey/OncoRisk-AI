@@ -97,7 +97,6 @@ if page == "Home":
         <p>Integrating Artificial Intelligence and Healthcare for Personalized Risk Assessment</p>
     </div>
     """, unsafe_allow_html=True)
-```
 
 
 # ---------------- PREDICTION HISTORY PAGE ----------------
